@@ -71,8 +71,7 @@ class Censor:
         makes mask for word by it's length ( or by _max_len if provided ).
         """
         mask = ''
-        if self._max_len is None: count = len(word)
-        else: count = self._max_len
+        count = len(word) if self._max_len is None else self._max_len
         for i in range(count): mask += self._mask
         return mask
 
