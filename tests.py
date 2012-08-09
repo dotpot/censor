@@ -48,7 +48,7 @@ class TestCensorDefault(TestCase):
     def test_none_pattern_exception(self):
         self._censor.add_pattern(None)
 
-def test_censor(self):
+    def test_censor(self):
         self._censor.add_keyword('fuck')
         self._censor.add_keyword('dick')
         self._censor.add_keyword('mother-fucker')
