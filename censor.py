@@ -29,8 +29,8 @@ class Censor:
         """
         self._mask = mask
         self._max_len = max_len
-        self._keywords = list()
-        self._patterns = list()
+        self._keywords = []
+        self._patterns = []
 
     def add_keyword(self, keyword):
         """
@@ -60,13 +60,22 @@ class Censor:
         """
         if pattern is None:
             raise NoKeywordProvidedError('pattern must be provided.')
+        
+        pattern = re.compile(pattern)
 
         if pattern not in self._patterns:
             self._patterns.append(pattern)
             return pattern
         return None
 
-    def make_mask(self, word):
+    def _make_mask_re(self, match):
+        """
+        makes mask for regexp match by it's length
+        (or by _max_len if provided).
+        """
+        return self._mask * (self._max_len or len(match.group(0)))
+
+    def _make_mask(self, word):
         """
         makes mask for word by it's length ( or by _max_len if provided ).
         """
@@ -77,9 +86,10 @@ class Censor:
         censors text and returns censored version.
         """
         for kw in self._keywords:
-            text = text.replace(kw, self.make_mask(kw))
+            text = text.replace(kw, self._make_mask(kw))
+
         for pt in self._patterns:
-            for m in re.findall(pt, text):
-                text = text.replace(m, self.make_mask(m))
+            text = pt.sub(self._make_mask_re, text)
+
         return text
 
