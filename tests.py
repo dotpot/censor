@@ -38,7 +38,7 @@ class TestCensorDefault(TestCase):
         pt = r'[0-9]+'
         self._censor.add_pattern(pt)
 
-        self.assertEqual(pt, self._censor._patterns[0])
+        self.assertEqual(pt, self._censor._patterns[0].pattern)
 
     @unittest.expectedFailure
     def test_none_keyword_exception(self):
@@ -48,7 +48,7 @@ class TestCensorDefault(TestCase):
     def test_none_pattern_exception(self):
         self._censor.add_pattern(None)
 
-def test_censor(self):
+    def test_censor(self):
         self._censor.add_keyword('fuck')
         self._censor.add_keyword('dick')
         self._censor.add_keyword('mother-fucker')
