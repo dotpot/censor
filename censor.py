@@ -70,11 +70,7 @@ class Censor:
         """
         makes mask for word by it's length ( or by _max_len if provided ).
         """
-        mask = ''
-        if self._max_len is None: count = len(word)
-        else: count = self._max_len
-        for i in range(count): mask += self._mask
-        return mask
+        return self._mask * (self._max_len or len(word))
 
     def censor(self, text):
         """
