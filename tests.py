@@ -1,12 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import unittest
-from censor import Censor
+from censor import Censor, NoKeywordProvidedError, BadKeywordProvidedError, NoPatternProvidedError, NonIteratableKeywordsError
 
 __author__ = 'dotpot'
-from unittest import TestCase
 
-class TestCensorDefault(TestCase):
+class TestCensorDefault(unittest.TestCase):
     def setUp(self):
         self._censor = Censor()
 
@@ -24,6 +23,13 @@ class TestCensorDefault(TestCase):
 
         self.assertEqual(kw, self._censor._keywords[0])
 
+    def test_keywords_addition(self):
+        kws = ['shit', 'ass', 'turd']
+        self._censor.add_keywords(kws)
+
+        for kw in kws:
+            self.assertIn(kw, self._censor._keywords)
+
     def test_keyword_sorting(self):
         kw1 = 'shit'
         kw2 = 'bastard'
@@ -40,13 +46,23 @@ class TestCensorDefault(TestCase):
 
         self.assertEqual(pt, self._censor._patterns[0].pattern)
 
-    @unittest.expectedFailure
     def test_none_keyword_exception(self):
-        self._censor.add_keyword(None)
+        self.assertRaises(NoKeywordProvidedError, self._censor.add_keyword, None)
 
-    @unittest.expectedFailure
+    def test_bad_keyword_exception(self):
+        self.assertRaises(BadKeywordProvidedError, self._censor.add_keyword, 0.1)
+
+    def test_none_keywords_exception(self):
+        self.assertRaises(NonIteratableKeywordsError, self._censor.add_keywords, None)
+
+    def test_wrong_keywords_exception(self):
+        self.assertRaises(NonIteratableKeywordsError, self._censor.add_keywords, 0.1)
+
+    def test_wrong_object_in_keywords_exception(self):
+        self.assertRaises(BadKeywordProvidedError, self._censor.add_keywords, ['shit', 0.1])
+
     def test_none_pattern_exception(self):
-        self._censor.add_pattern(None)
+        self.assertRaises(NoPatternProvidedError, self._censor.add_pattern, None)
 
     def test_censor(self):
         self._censor.add_keyword('fuck')
