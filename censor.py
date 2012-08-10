@@ -5,6 +5,7 @@ __author__ = 'dotpot'
 import re
 
 class NoKeywordProvidedError(Exception): pass
+class NonIteratableKeywordsError(Exception): pass
 class NoPatternProvidedError(Exception): pass
 
 class Censor:
@@ -53,13 +54,25 @@ class Censor:
             return keyword
         return None
 
+    def add_keywords(self, keywords):
+        """
+        adds all keywords from a provided collection to Censor core.
+        keywords must be iteratable object, with strings or unicode
+        strings as it's elements.
+        """
+        if keywords is None or not hasattr(keywords, '__iter__'):
+            raise NonIteratableKeywordsError('keywords must be iteratable object.')
+
+        for keyword in keywords:
+            self.add_keyword(keyword)
+
     def add_pattern(self, pattern):
         """
         add provided & non duplicate pattern to Censor core.
         if provided None, NoKeywordProvidedError will be raised.
         """
         if pattern is None:
-            raise NoKeywordProvidedError('pattern must be provided.')
+            raise NoPatternProvidedError('pattern must be provided.')
         
         pattern = re.compile(pattern)
 
