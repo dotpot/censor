@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import unittest
-from censor import Censor, NoKeywordProvidedError, NoPatternProvidedError, NonIteratableKeywordsError
+from censor import Censor, NoKeywordProvidedError, BadKeywordProvidedError, NoPatternProvidedError, NonIteratableKeywordsError
 
 __author__ = 'dotpot'
 
@@ -49,11 +49,17 @@ class TestCensorDefault(unittest.TestCase):
     def test_none_keyword_exception(self):
         self.assertRaises(NoKeywordProvidedError, self._censor.add_keyword, None)
 
+    def test_bad_keyword_exception(self):
+        self.assertRaises(BadKeywordProvidedError, self._censor.add_keyword, 0.1)
+
     def test_none_keywords_exception(self):
         self.assertRaises(NonIteratableKeywordsError, self._censor.add_keywords, None)
 
     def test_wrong_keywords_exception(self):
         self.assertRaises(NonIteratableKeywordsError, self._censor.add_keywords, 0.1)
+
+    def test_wrong_object_in_keywords_exception(self):
+        self.assertRaises(BadKeywordProvidedError, self._censor.add_keywords, ['shit', 0.1])
 
     def test_none_pattern_exception(self):
         self.assertRaises(NoPatternProvidedError, self._censor.add_pattern, None)

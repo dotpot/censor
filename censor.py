@@ -5,6 +5,7 @@ __author__ = 'dotpot'
 import re
 
 class NoKeywordProvidedError(Exception): pass
+class BadKeywordProvidedError(Exception): pass
 class NonIteratableKeywordsError(Exception): pass
 class NoPatternProvidedError(Exception): pass
 
@@ -42,6 +43,8 @@ class Censor:
         """
         if keyword is None:
             raise NoKeywordProvidedError('keyword must be provided.')
+        if not isinstance(keyword, unicode) and not isinstance(keyword, str):
+            raise BadKeywordProvidedError('keyword must be either unicode or a string.')
         if not isinstance(keyword, unicode):
             keyword = keyword.decode('utf-8')
 
