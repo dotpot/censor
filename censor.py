@@ -64,7 +64,7 @@ class Censor:
         strings as it's elements.
         """
         if keywords is None or not hasattr(keywords, '__iter__'):
-            raise NonIteratableKeywordsError('keywords must be iteratable object.')
+            raise NonIteratableKeywordsError('keywords must be iterable object.')
 
         for keyword in keywords:
             self.add_keyword(keyword)
