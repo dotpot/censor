@@ -48,19 +48,19 @@ class Censor:
         if not isinstance(keyword, unicode):
             keyword = keyword.decode('utf-8')
 
-        keyword = keyword.lower()
+        keyword = re.compile('{0}'.format(keyword), re.IGNORECASE)
 
         if keyword not in self._keywords:
             self._keywords.append(keyword)
              # sort keywords by length so longer words will be replaced first.
-            self._keywords.sort(key = lambda s: -len(s))
-            return keyword
+            self._keywords.sort(key = lambda s: -len(s.pattern))
+            return keyword.pattern
         return None
 
     def add_keywords(self, keywords):
         """
         adds all keywords from a provided collection to Censor core.
-        keywords must be iteratable object, with strings or unicode
+        keywords must be iterable object, with strings or unicode
         strings as it's elements.
         """
         if keywords is None or not hasattr(keywords, '__iter__'):
@@ -101,11 +101,7 @@ class Censor:
         """
         censors text and returns censored version.
         """
-        for kw in self._keywords:
-            text = text.replace(kw, self._make_mask(kw))
-
-        for pt in self._patterns:
-            text = pt.sub(self._make_mask_re, text)
-
+        for kw in (self._keywords + self._patterns):
+            text = kw.sub(self._make_mask_re, text)
         return text
 

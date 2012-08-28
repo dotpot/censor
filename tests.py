@@ -21,14 +21,14 @@ class TestCensorDefault(unittest.TestCase):
         kw = 'shit'
         self._censor.add_keyword(kw)
 
-        self.assertEqual(kw, self._censor._keywords[0])
+        self.assertEqual(kw, self._censor._keywords[0].pattern)
 
     def test_keywords_addition(self):
         kws = ['shit', 'ass', 'turd']
         self._censor.add_keywords(kws)
 
-        for kw in kws:
-            self.assertIn(kw, self._censor._keywords)
+        for kw in self._censor._keywords:
+            self.assertIn(kw.pattern, kws)
 
     def test_keyword_sorting(self):
         kw1 = 'shit'
@@ -37,8 +37,8 @@ class TestCensorDefault(unittest.TestCase):
         self._censor.add_keyword(kw1)
         self._censor.add_keyword(kw2)
 
-        self.assertEqual(kw2, self._censor._keywords[0])
-        self.assertEqual(kw1, self._censor._keywords[1])
+        self.assertEqual(kw2, self._censor._keywords[0].pattern)
+        self.assertEqual(kw1, self._censor._keywords[1].pattern)
 
     def test_pattern_addition(self):
         pt = r'[0-9]+'
@@ -77,3 +77,14 @@ class TestCensorDefault(unittest.TestCase):
         censored_actual = self._censor.censor(text_to_censor)
 
         self.assertEqual(censored_expected, censored_actual)
+
+    def test_censor_invariant_case(self):
+        self._censor.add_keyword('fuck')
+        self._censor.add_keyword('sex')
+
+        text_to_censor = 'Fuck you! I will not have sEx now.'
+
+        censored_expected = '**** you! I will not have *** now.'
+        censored_actual = self._censor.censor(text_to_censor)
+
+        self.assertEquals(censored_expected, censored_actual)
