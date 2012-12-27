@@ -6,7 +6,7 @@ import re
 
 class NoKeywordProvidedError(Exception): pass
 class BadKeywordProvidedError(Exception): pass
-class NonIteratableKeywordsError(Exception): pass
+class NonIterableKeywordsError(Exception): pass
 class NoPatternProvidedError(Exception): pass
 
 class Censor:
@@ -64,7 +64,7 @@ class Censor:
         strings as it's elements.
         """
         if keywords is None or not hasattr(keywords, '__iter__'):
-            raise NonIteratableKeywordsError('keywords must be iterable object.')
+            raise NonIterableKeywordsError('keywords must be iterable object.')
 
         for keyword in keywords:
             self.add_keyword(keyword)
@@ -76,7 +76,6 @@ class Censor:
         """
         if pattern is None:
             raise NoPatternProvidedError('pattern must be provided.')
-        
         pattern = re.compile(pattern)
 
         if pattern not in self._patterns:
