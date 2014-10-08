@@ -1,9 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import unittest
-from censor import Censor, NoKeywordProvidedError, BadKeywordProvidedError, NoPatternProvidedError, NonIterableKeywordsError
 
-__author__ = 'dotpot'
+from censor import (Censor,
+                    NoKeywordProvidedError,
+                    BadKeywordProvidedError,
+                    NoPatternProvidedError,
+                    NonIterableKeywordsError)
+
 
 class TestCensorDefault(unittest.TestCase):
     def setUp(self):
@@ -15,7 +19,7 @@ class TestCensorDefault(unittest.TestCase):
     def test_init(self):
         self.assertEquals(0, len(self._censor._keywords))
         self.assertEquals(0, len(self._censor._patterns))
-        self.assertEquals('*',self._censor._mask)
+        self.assertEquals('*', self._censor._mask)
 
     def test_keyword_addition(self):
         kw = 'shit'

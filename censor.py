@@ -1,13 +1,23 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-__author__ = 'dotpot'
-
 import re
 
-class NoKeywordProvidedError(Exception): pass
-class BadKeywordProvidedError(Exception): pass
-class NonIterableKeywordsError(Exception): pass
-class NoPatternProvidedError(Exception): pass
+
+class NoKeywordProvidedError(Exception):
+    pass
+
+
+class BadKeywordProvidedError(Exception):
+    pass
+
+
+class NonIterableKeywordsError(Exception):
+    pass
+
+
+class NoPatternProvidedError(Exception):
+    pass
+
 
 class Censor:
     """
@@ -15,15 +25,12 @@ class Censor:
     and censor() method will return censored text with mask (default - '*').
 
     Example:
-    from censor import Censor
+    >>> from censor import Censor
 
-    censor = Censor()
-    censor.add_keyword('shit')
-    text = 'hello you little shit'
-    censored_text = censor.censor(text)
-    --
-    censored_text is: 'hello you little ****'
-
+    >>> censor = Censor()
+    >>> censor.add_keyword('shit')
+    >>> print censor.censor('hello you little shit')
+    >>> 'hello you little ****'
     """
     def __init__(self, mask='*', max_len=None):
         """
