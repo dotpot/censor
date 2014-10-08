@@ -17,20 +17,18 @@ And all you want to do is just censor it.
 
 all you have to do is:
 
+```python
 	from censor import Censor
 
     censor = Censor()
     censor.add_keyword('shit')
-    text = 'hello you little shit'
-    censored_text = censor.censor(text)
     
-print censored_text
+    print censor.censor('hello you little shit')
 
     'hello you little ****'
+```
 
 #### Isn't that trolololowesome ?!
 
 
-### Please feel free to improve it if you like :)
-
-![image](http://img193.imageshack.us/img193/5605/tumblrlznr805hcb1r3zat8.png)
+##### Please feel free to improve it if you like :)
